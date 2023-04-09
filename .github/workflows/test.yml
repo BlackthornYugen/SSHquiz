@@ -12,7 +12,7 @@ jobs:
         run: sudo apt-get install -y expect
 
       - name: Get Shellspec
-        run: curl -fsSL https://git.io/shellspec | tee >(sha256sum) | sh -s -- --yes
+        run: curl -fsSL https://git.io/shellspec | tee >(sha256sum) | bash -xs -- --yes
 
       - name: Shellspec jq
         run: shellspec --output junit
