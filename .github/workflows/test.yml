@@ -1,0 +1,31 @@
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install expect
+        run: sudo apt-get install -y expect
+
+      - name: Get Shellspec
+        run: curl -fsSL https://git.io/shellspec | tee >(sha256sum) | sh -s -- --yes
+
+      - name: Shellspec jq
+        run: shellspec --output junit
+
+      - name: Upload Unit Test Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Unit Test Results
+          path: report/*.xml
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: report/*.xml

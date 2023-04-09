@@ -1,0 +1,27 @@
+#!/usr/bin/expect -f
+
+set timeout 1
+expect_before {
+    timeout { puts "timeout"; exit 2 }
+    eof     { puts "eof";     exit 1 }
+}
+
+spawn ./participant.sh
+
+expect "Enter your handle (up to 7 letters, no spaces or special characters)"
+send "TestUser\r"
+
+expect "Please enter your choice for QUESTION 1 (enter 1, 2, 3, or 4 only!)"
+send "1\r"
+
+# Add more expect and send commands for the remaining questions
+for {set i 2} {$i <= 20} {incr i} {
+    expect "Please enter your choice for QUESTION $i (enter 1, 2, 3, or 4 only!)"
+    send "1\r"
+}
+
+expect "CONGRATULATIONS! You have successfully completed this quiz."
+expect "Press Enter to quit."
+send "\r"
+
+expect eof
