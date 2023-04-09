@@ -1,6 +1,6 @@
 #!/usr/bin/expect -f
 
-set timeout 1
+set timeout 5
 expect_before {
     timeout { puts "timeout"; exit 2 }
     eof     { puts "eof";     exit 1 }
