@@ -3,6 +3,7 @@
 set timeout 1
 expect_before {
     timeout { puts "timeout"; exit 2 }
+    eof     { puts "eof";     exit 1 }
 }
 
 spawn ./participant.sh
